@@ -107,3 +107,50 @@ A constructor doing *internal* work (setting fields, creating internal collectio
 - **Observer/pub-sub**: `feed.subscribe(this)` in a constructor
 
 These bugs are silent — the code compiles, passes tests, and works 99.9% of the time. Under load, another thread sees a default value (`0`, `null`) instead of the initialized one, causing a crash that's nearly impossible to reproduce.
+
+### ThreadLocal
+
+A `ThreadLocal` variable provides thread-local storage: each thread has its own independent copy of the variable. This is useful for maintaining per-thread state without synchronization.
+
+```java
+public class ThreadLocalExample {
+    private static final ThreadLocal<Integer> threadLocalCount = ThreadLocal.withInitial(() ->
+        0
+    );
+
+    public static void increment() {
+        threadLocalCount.set(threadLocalCount.get() + 1);
+    }
+
+    public static int getCount() {
+        return threadLocalCount.get();
+    }
+}
+```
+In this example, each thread has its own `threadLocalCount`. When one thread calls `increment()`, it only affects that thread's count. No synchronization is needed because threads don't share the variable.
+
+See in action using the following code:
+
+```java
+public class ThreadLocalDemo {
+    private static final ThreadLocal<String> threadLocalName = ThreadLocal.withInitial(() ->
+        Thread.currentThread().getName()
+    );
+
+    public static void main(String[] args) throws InterruptedException {
+        Runnable task = () -> {
+            System.out.println("Thread: " + Thread.currentThread().getName() + ", ThreadLocal: " + threadLocalName.get());
+            threadLocalName.set("Modified by " + Thread.currentThread().getName());
+            System.out.println("Thread: " + Thread.currentThread().getName() + ", ThreadLocal after modification: " + threadLocalName.get());
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+
+        thread1.join();
+        thread2.join();
+    }
+}```
