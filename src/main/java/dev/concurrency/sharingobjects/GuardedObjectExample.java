@@ -1,28 +1,43 @@
 package dev.concurrency.sharingobjects;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 public class GuardedObjectExample {
-    // The state is guarded by the intrinsic lock of the current object ('this')
+    // The state is guarded by an explicit ReentrantLock
+    private final Lock lock = new ReentrantLock();
+    // @GuardedBy("lock")
     private int availableConnections;
 
     public GuardedObjectExample(int totalConnections) {
         this.availableConnections = totalConnections;
     }
 
-    // Using 'synchronized' ensures that only one thread can execute this method at a time,
-    // guarding the 'availableConnections' variable from concurrent access.
-    public synchronized boolean acquire() {
-        if (availableConnections > 0) {
-            availableConnections--;
-            System.out.println(Thread.currentThread().getName() + " acquired connection. Remaining: " + availableConnections);
-            return true;
+    // Using explicit Lock ensures that we can protect the state from concurrent access,
+    // offering more flexibility than intrinsic locks if needed later (e.g. tryLock).
+    public boolean acquire() {
+        lock.lock();
+        try {
+            if (availableConnections > 0) {
+                availableConnections--;
+                System.out.println(Thread.currentThread().getName() + " acquired connection. Remaining: " + availableConnections);
+                return true;
+            }
+            System.out.println(Thread.currentThread().getName() + " failed to acquire connection.");
+            return false;
+        } finally {
+            lock.unlock(); // Ensure lock is released even if an exception occurs
         }
-        System.out.println(Thread.currentThread().getName() + " failed to acquire connection.");
-        return false;
     }
 
-    public synchronized void release() {
-        availableConnections++;
-        System.out.println(Thread.currentThread().getName() + " released connection. Remaining: " + availableConnections);
+    public void release() {
+        lock.lock();
+        try {
+            availableConnections++;
+            System.out.println(Thread.currentThread().getName() + " released connection. Remaining: " + availableConnections);
+        } finally {
+            lock.unlock(); // Ensure lock is released even if an exception occurs
+        }
     }
 
     public static void main(String[] args) {
