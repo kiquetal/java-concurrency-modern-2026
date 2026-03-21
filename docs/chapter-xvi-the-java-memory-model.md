@@ -57,4 +57,31 @@ Piggybacking combines rules 1 + 4 with either rule 2 or 3: the program order rul
 
 See in action: `src/main/java/dev/concurrency/memorymodel/VolatilePiggybackDemo.java`
 
+#### Volatile = Visibility, Not Notification
+
+A common misconception: "`volatile` makes the other thread see the value immediately." That's **half right**.
+
+- `volatile` guarantees that **when** a thread reads the variable, it sees the **latest** value. No stale cache, no compiler optimization tricks — the real value from main memory.
+- `volatile` does **not** guarantee **when** the thread will actually perform that read. It doesn't wake up threads, interrupt them, or signal them.
+
+Think of it like a whiteboard:
+
+```
+volatile = a whiteboard that's always up to date
+
+Thread A writes "42" on the whiteboard.
+
+Thread B is guaranteed to see "42" the moment it LOOKS at the whiteboard.
+But nobody forces Thread B to look.
+If Thread B is asleep, or busy, or hasn't started yet — the whiteboard
+just sits there with "42" on it, waiting.
+```
+
+This is why a `while (!ready) { }` spin loop works when both threads are running — the reader keeps looking at the whiteboard in a tight loop, so it sees the update almost instantly. But if the writer never writes, the reader spins forever.
+
+**`volatile` = "when you look, you see the truth"**
+**`volatile` ≠ "you will be notified when something changes"**
+
+For notification (actually waking up a sleeping thread), use `wait()/notify()`, `LockSupport.park()/unpark()`, `CountDownLatch`, `Semaphore`, etc.
+
 
