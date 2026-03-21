@@ -50,10 +50,14 @@ public class TryLockRetryExample {
                                     + " cancelled order " + orderId);
                             return true;
                         } finally {
+                            System.out.println(Thread.currentThread().getName()
+                                    + " released inventory lock");
                             inventoryLock.unlock();
                         }
                     }
                 } finally {
+                    System.out.println(Thread.currentThread().getName()
+                            + " released ledger lock");
                     ledgerLock.unlock();
                 }
             }
@@ -73,11 +77,16 @@ public class TryLockRetryExample {
         // With synchronized this would DEADLOCK. With tryLock, threads back off and retry.
 
         Thread t1 = new Thread(() -> {
-            try { placeOrder("Laptop"); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            try { placeOrder("Laptop"); } catch (InterruptedException e) {
+
+                System.out.println("Interrupted while trying to place order");
+                Thread.currentThread().interrupt(); }
         }, "Thread-Checkout");
 
         Thread t2 = new Thread(() -> {
-            try { cancelOrder("ORD-42"); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+            try { cancelOrder("ORD-42"); } catch (InterruptedException e) {
+                System.out.println("Interrupted while trying to cancel order");
+                Thread.currentThread().interrupt(); }
         }, "Thread-Cancel");
 
         t1.start();

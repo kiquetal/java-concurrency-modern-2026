@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming">
-      <change beforePath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" afterDir="false" />
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add diagram to illustrate tryLock retry sequence in multithreaded programming">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/concurrency/sharingobjects/TryLockRetryExample.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/concurrency/sharingobjects/TryLockRetryExample.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +142,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="4560000" />
+      <workItem from="1774095730407" duration="5148000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -239,7 +240,39 @@
       <option name="project" value="LOCAL" />
       <updated>1774115833716</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="docs: add example of using tryLock with retries to avoid deadlocks in multithreaded programming">
+      <option name="closed" value="true" />
+      <created>1774115952910</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1774115952910</updated>
+    </task>
+    <task id="LOCAL-00014" summary="docs: add TryLockRetryExample to demonstrate retry mechanism for avoiding deadlocks">
+      <option name="closed" value="true" />
+      <created>1774115976342</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1774115976342</updated>
+    </task>
+    <task id="LOCAL-00015" summary="docs: add TryLockRetryExample to demonstrate retry mechanism for avoiding deadlocks">
+      <option name="closed" value="true" />
+      <created>1774116218170</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1774116218170</updated>
+    </task>
+    <task id="LOCAL-00016" summary="docs: add diagram to illustrate tryLock retry sequence in multithreaded programming">
+      <option name="closed" value="true" />
+      <created>1774116317273</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1774116317273</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,7 +290,10 @@
     <MESSAGE value="docs: add examples of deadlock and livelock scenarios in multithreaded programming" />
     <MESSAGE value="docs: add strategies to avoid deadlock and livelock in multithreaded programming" />
     <MESSAGE value="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming" />
+    <MESSAGE value="docs: add example of using tryLock with retries to avoid deadlocks in multithreaded programming" />
+    <MESSAGE value="docs: add TryLockRetryExample to demonstrate retry mechanism for avoiding deadlocks" />
+    <MESSAGE value="docs: add diagram to illustrate tryLock retry sequence in multithreaded programming" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add diagram to illustrate tryLock retry sequence in multithreaded programming" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
