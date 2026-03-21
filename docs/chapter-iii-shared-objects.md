@@ -160,3 +160,14 @@ An inmutable object is one whose state cannot chaange
 after construction. Inmutable objects are thread-safe by design, because their state cannot be modified after they are created. This means that multiple threads can safely share references to the same inmutable object without any synchronization.
 
 Inmutable objects are always thread-safe, but thread-safe objects are not always inmutable. For example, a `Vector` is thread-safe because its methods are synchronized, but it is not inmutable because its state can change after construction.
+
+
+#### Sharing objects safely
+
+- Thread-confined: A thread-confined object is only accessed by a single thread. No synchronization is needed because no other thread can see it.
+
+- Shared read-only: If an object is shared between threads but never modified after construction, it is thread-safe. This is often achieved by making the object inmutable.
+
+- Shared thread-safe: If an object is shared between threads and can be modified, it must be designed to be thread-safe. This typically involves using synchronization, volatile variables, or concurrent data structures to ensure that all threads see a consistent view of the object's state.
+
+- Guarded: A guarded object can be accessed only with a specific lock held. The lock protects the object's state from concurrent access, ensuring thread safety.
