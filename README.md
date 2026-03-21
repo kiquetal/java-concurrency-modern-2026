@@ -3,7 +3,9 @@
 Learning journey through modern Java concurrency, based on:
 
 - **Java Concurrency in Practice** — Brian Goetz et al.
-- **Modern Concurrency** — concepts and patterns for current Java
+- **Modern Concurrency in Java** — A N M Bazlur Rahman
+- **Java Structured Concurrency** — Anghel Leonard
+- **Understanding Java Virtual Threads** — Fu Cheng
 
 ## Structure
 
