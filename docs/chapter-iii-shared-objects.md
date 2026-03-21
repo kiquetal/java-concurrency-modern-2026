@@ -215,12 +215,47 @@ See in action: `src/main/java/dev/concurrency/sharingobjects/ImmutableUser.java`
 - **Guarded**: A guarded object can be accessed only with a specific lock held. The lock protects the object's state from concurrent access, ensuring thread safety.
   ```java
   public class ConnectionPool {
-      // @GuardedBy("this")
+      private final Lock lock = new ReentrantLock();
+      // @GuardedBy("lock")
       private int availableConnections = 10;
 
-      public synchronized void acquire() {
-          availableConnections--;
+      public void acquire() {
+          lock.lock();
+          try {
+              availableConnections--;
+          } finally {
+              lock.unlock();
+          }
       }
   }
   ```
   See in action: `src/main/java/dev/concurrency/sharingobjects/GuardedObjectExample.java`
+
+
+### 3.3 Lock Hazards: Deadlock and Livelock
+
+Using explicit locks (like `ReentrantLock`) or intrinsic locks (`synchronized`) is powerful, but introduces liveness hazards: the system might stop making progress.
+
+#### Deadlock
+A deadlock occurs when two or more threads are blocked forever, waiting for each other to release locks.
+
+**Scenario:**
+- Thread A acquires Lock 1.
+- Thread B acquires Lock 2.
+- Thread A tries to acquire Lock 2 (blocks, because B holds it).
+- Thread B tries to acquire Lock 1 (blocks, because A holds it).
+Neither thread can proceed. They are stuck indefinitely.
+
+#### Livelock
+A livelock occurs when threads are not blocked, but they continuously change their state in response to each other without making any real progress.
+
+**Analogy:** Two people meet in a narrow hallway. Person A steps to their right to let B pass. Person B steps to their left to let A pass. They are now blocking each other again. They keep stepping side-to-side indefinitely. They are "active" but no progress is made. In code, this often happens when threads use `tryLock()` and back off, but their backoff logic forces them into an endless retry loop in lockstep.
+
+#### Rules and Tips to Avoid Lock Hazards
+
+> **Rule #1: Enforce a Global Lock Order.**
+> If all threads always acquire locks in the exact same order (e.g., always Lock 1 then Lock 2), deadlocks involving those locks are mathematically impossible. If you need to lock two objects, order them by a unique property (like a database ID or `System.identityHashCode`).
+
+- **Use Timed Locks (`tryLock`):** Instead of blocking forever with `.lock()`, use `.tryLock(timeout, TimeUnit)`. If the lock isn't acquired in time, the thread can back off, release its current locks, wait a random amount of time (to avoid livelock), and retry.
+- **Keep Lock Blocks Small:** Hold locks for the shortest possible time. Only include the code that actually accesses the shared state. Do not perform expensive operations (like I/O or network calls) while holding a lock.
+- **Never Call Alien Methods While Holding a Lock:** An "alien method" is a method whose implementation you don't control (e.g., an overridden method or a listener callback). Calling it while holding a lock is dangerous because the alien method might try to acquire another lock, violating your lock ordering and causing a deadlock.
