@@ -350,6 +350,65 @@ public void workerAction(Worker otherWorker) {
 ```
 By backing off for a random amount of time (e.g., 0 to 50ms), one thread will wake up before the other, realize the other is still sleeping, and complete its work. The endless "hallway dance" is broken.
 
+#### Real-World Deadlock: Order Processing System
+
+The bank transfer example above uses the same object type on both sides (Account ↔ Account). In production, deadlocks more often involve **different resource types** locked in opposite order by different operations.
+
+```java
+public class OrderService {
+    private final Object inventoryLock = new Object();
+    private final Object ledgerLock = new Object();
+
+    public void placeOrder(String item) {
+        synchronized (inventoryLock) {       // locks inventory FIRST
+            synchronized (ledgerLock) {      // then ledger
+                // check stock, reserve, record order
+            }
+        }
+    }
+
+    public void cancelOrder(String orderId) {
+        synchronized (ledgerLock) {          // locks ledger FIRST
+            synchronized (inventoryLock) {   // then inventory
+                // find order, mark cancelled, restore stock
+            }
+        }
+    }
+}
+```
+
+`placeOrder` locks inventory → ledger. `cancelOrder` locks ledger → inventory. Opposite order = deadlock:
+
+```
+Thread-Checkout:  locks inventoryLock  →  tries ledgerLock   → BLOCKED
+Thread-Cancel:    locks ledgerLock     →  tries inventoryLock → BLOCKED
+```
+
+No crash, no exception, no log. The app just freezes. You need `jstack` or `Thread.getAllStackTraces()` to diagnose it.
+
+**Fix:** Force a global order — always inventory before ledger:
+
+```java
+public void cancelOrder(String orderId) {
+    synchronized (inventoryLock) {       // same order as placeOrder
+        synchronized (ledgerLock) {
+            // find order, mark cancelled, restore stock
+        }
+    }
+}
+```
+
+#### The Four Coffman Conditions
+
+A deadlock requires **all four** to be true simultaneously:
+
+1. **Mutual exclusion** — the resource is exclusive (a lock by definition).
+2. **Hold and wait** — a thread holds one lock while waiting for another.
+3. **No preemption** — you can't forcibly take a lock from a thread.
+4. **Circular wait** — Thread A waits for B, Thread B waits for A.
+
+Break any one condition and deadlock is impossible. Global lock ordering breaks #4 (circular wait). `tryLock(timeout)` breaks #2 (hold and wait — the thread gives up instead of waiting forever).
+
 #### Rules and Tips to Avoid Lock Hazards
 
 > **Rule #1: Enforce a Global Lock Order.**

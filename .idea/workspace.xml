@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: update ConnectionPool example to use ReentrantLock for thread safety">
-      <change beforePath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" afterDir="false" />
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add strategies to avoid deadlock and livelock in multithreaded programming">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,7 +18,7 @@
     </persistenceIdMap>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="20" />
+    <option name="cachedIndexableFilesCount" value="26" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="FileTemplateManagerImpl">
@@ -87,10 +87,10 @@
 }]]></component>
   <component name="RecapSpentCounter">
     <option name="endsOfQuotaMs" value="1775077200000" />
-    <option name="spentUsd" value="0.0343948" />
+    <option name="spentUsd" value="0.0454966" />
   </component>
   <component name="RecapUselessUpdatesCounter">
-    <option name="suspendCountdown" value="8" />
+    <option name="suspendCountdown" value="7" />
   </component>
   <component name="RunManager">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
@@ -140,7 +140,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="3270000" />
+      <workItem from="1774095730407" duration="4256000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -214,7 +214,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774107823815</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="docs: add examples of deadlock and livelock scenarios in multithreaded programming">
+      <option name="closed" value="true" />
+      <created>1774108066218</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1774108066218</updated>
+    </task>
+    <task id="LOCAL-00011" summary="docs: add strategies to avoid deadlock and livelock in multithreaded programming">
+      <option name="closed" value="true" />
+      <created>1774108197800</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1774108197800</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -229,7 +245,9 @@
     <MESSAGE value="docs: add examples of thread-safe and thread-confined programming patterns" />
     <MESSAGE value="docs: update GuardedObjectExample to use ReentrantLock for thread safety" />
     <MESSAGE value="docs: update ConnectionPool example to use ReentrantLock for thread safety" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: update ConnectionPool example to use ReentrantLock for thread safety" />
+    <MESSAGE value="docs: add examples of deadlock and livelock scenarios in multithreaded programming" />
+    <MESSAGE value="docs: add strategies to avoid deadlock and livelock in multithreaded programming" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add strategies to avoid deadlock and livelock in multithreaded programming" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
