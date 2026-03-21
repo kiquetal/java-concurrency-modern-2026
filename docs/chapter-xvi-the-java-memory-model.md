@@ -55,4 +55,6 @@ Piggybacking combines rules 1 + 4 with either rule 2 or 3: the program order rul
 
 > **Rule of thumb:** Don't piggyback in application code unless you have a very good reason. Use explicit synchronization (`volatile`, `synchronized`, `Lock`) to make your intent clear. Piggybacking is a tool for library authors who need every last drop of performance and can prove correctness.
 
+See in action: `src/main/java/dev/concurrency/memorymodel/VolatilePiggybackDemo.java`
+
 

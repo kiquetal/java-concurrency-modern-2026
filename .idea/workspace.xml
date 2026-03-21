@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add diagram illustrating happens-before visibility in Java Memory Model" />
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: expand Chapter XVI with piggybacking on synchronization and happens-before rules">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -62,6 +65,7 @@
     "Application.SharedThreadSafeExample.executor": "Run",
     "Application.ThreadLocalDemo.executor": "Run",
     "Application.TryLockRetryExample.executor": "Run",
+    "Application.VolatilePiggybackDemo.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -139,7 +143,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="6234000" />
+      <workItem from="1774095730407" duration="6706000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -309,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774117464439</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="docs: expand Chapter XVI with piggybacking on synchronization and happens-before rules">
+      <option name="closed" value="true" />
+      <created>1774117747986</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1774117747986</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -335,7 +347,8 @@
     <MESSAGE value="docs: add Chapter XVI on the Java Memory Model to documentation" />
     <MESSAGE value="docs: add platform memory model explanation and happens-before concept to Chapter XVI" />
     <MESSAGE value="docs: add diagram illustrating happens-before visibility in Java Memory Model" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add diagram illustrating happens-before visibility in Java Memory Model" />
+    <MESSAGE value="docs: expand Chapter XVI with piggybacking on synchronization and happens-before rules" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: expand Chapter XVI with piggybacking on synchronization and happens-before rules" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
