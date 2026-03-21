@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add Chapter XVI on the Java Memory Model to documentation">
-      <change beforePath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" afterDir="false" />
-    </list>
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add diagram illustrating happens-before visibility in Java Memory Model" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -141,7 +139,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="5917000" />
+      <workItem from="1774095730407" duration="6234000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -295,7 +293,23 @@
       <option name="project" value="LOCAL" />
       <updated>1774116916195</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="docs: add platform memory model explanation and happens-before concept to Chapter XVI">
+      <option name="closed" value="true" />
+      <created>1774117292297</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1774117292297</updated>
+    </task>
+    <task id="LOCAL-00021" summary="docs: add diagram illustrating happens-before visibility in Java Memory Model">
+      <option name="closed" value="true" />
+      <created>1774117464439</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1774117464439</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -319,7 +333,9 @@
     <MESSAGE value="docs: enhance TryLockRetryExample with interruption handling and lock release messages" />
     <MESSAGE value="docs: clarify tryLock behavior and interruptibility in shared objects chapter" />
     <MESSAGE value="docs: add Chapter XVI on the Java Memory Model to documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add Chapter XVI on the Java Memory Model to documentation" />
+    <MESSAGE value="docs: add platform memory model explanation and happens-before concept to Chapter XVI" />
+    <MESSAGE value="docs: add diagram illustrating happens-before visibility in Java Memory Model" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add diagram illustrating happens-before visibility in Java Memory Model" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
