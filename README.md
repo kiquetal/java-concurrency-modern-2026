@@ -17,7 +17,7 @@ src/    → Code examples and exercises
 ## 🗺️ Chronological Study Plan
 
 ### Phase I: Foundations (The Physics)
-- [ ] **Java Concurrency in Practice** (JCiP)
+- [x] **Java Concurrency in Practice** (JCiP)
   - Ch. 3: Sharing Objects
   - Ch. 16: The Java Memory Model
 
