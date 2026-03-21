@@ -129,28 +129,26 @@ public class ThreadLocalExample {
 ```
 In this example, each thread has its own `threadLocalCount`. When one thread calls `increment()`, it only affects that thread's count. No synchronization is needed because threads don't share the variable.
 
-See in action using the following code:
+See in action: `src/main/java/dev/concurrency/sharingobjects/ThreadLocalDemo.java`
 
-```java
-public class ThreadLocalDemo {
-    private static final ThreadLocal<String> threadLocalName = ThreadLocal.withInitial(() ->
-        Thread.currentThread().getName()
-    );
+#### Real-world use cases
 
-    public static void main(String[] args) throws InterruptedException {
-        Runnable task = () -> {
-            System.out.println("Thread: " + Thread.currentThread().getName() + ", ThreadLocal: " + threadLocalName.get());
-            threadLocalName.set("Modified by " + Thread.currentThread().getName());
-            System.out.println("Thread: " + Thread.currentThread().getName() + ", ThreadLocal after modification: " + threadLocalName.get());
-        };
+1. **Database connections / transactions (Spring `@Transactional`)** — Spring stores the current `Connection` in a `ThreadLocal` so every repository call within a `@Transactional` method uses the same connection without passing it explicitly.
 
-        Thread thread1 = new Thread(task);
-        Thread thread2 = new Thread(task);
-
-        thread1.start();
-        thread2.start();
-
-        thread1.join();
-        thread2.join();
+2. **User context in web applications** — Each HTTP request runs on its own thread. A servlet filter stores the authenticated user in a `ThreadLocal` at the start, and any service layer code can access it without needing the `HttpServletRequest`:
+    ```java
+    public class UserContext {
+        private static final ThreadLocal<String> currentUser = new ThreadLocal<>();
+        public static void set(String userId) { currentUser.set(userId); }
+        public static String get() { return currentUser.get(); }
+        public static void clear() { currentUser.remove(); }
     }
-}```
+    ```
+
+3. **MDC in logging (SLF4J / Logback)** — `MDC.put("requestId", "abc-123")` stores the request ID in a `ThreadLocal<Map>`. Every log line in that thread automatically includes it without passing it through every method.
+
+4. **Non-thread-safe objects** — `SimpleDateFormat` is not thread-safe. Before Java 8's `DateTimeFormatter`, the common fix was wrapping it in a `ThreadLocal` so each thread gets its own instance.
+
+#### ThreadLocal and virtual threads — a warning
+
+`ThreadLocal` works well with platform threads (hundreds of threads = hundreds of copies). With virtual threads (potentially millions), each one gets its own copy — that's a memory problem. This is why Java introduced **Scoped Values** as the virtual-thread-friendly replacement. See Phase III notes on Scoped Values (Ch. 5).
