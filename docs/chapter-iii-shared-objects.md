@@ -152,3 +152,11 @@ See in action: `src/main/java/dev/concurrency/sharingobjects/ThreadLocalDemo.jav
 #### ThreadLocal and virtual threads — a warning
 
 `ThreadLocal` works well with platform threads (hundreds of threads = hundreds of copies). With virtual threads (potentially millions), each one gets its own copy — that's a memory problem. This is why Java introduced **Scoped Values** as the virtual-thread-friendly replacement. See Phase III notes on Scoped Values (Ch. 5).
+
+
+#### Inmutability
+
+An inmutable object is one whose state cannot chaange
+after construction. Inmutable objects are thread-safe by design, because their state cannot be modified after they are created. This means that multiple threads can safely share references to the same inmutable object without any synchronization.
+
+Inmutable objects are always thread-safe, but thread-safe objects are not always inmutable. For example, a `Vector` is thread-safe because its methods are synchronized, but it is not inmutable because its state can change after construction.
