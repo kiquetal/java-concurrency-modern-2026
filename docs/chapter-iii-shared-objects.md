@@ -265,6 +265,42 @@ public void transfer(Account from, Account to, double amount) {
 // DEADLOCK!
 ```
 
+**How to avoid Deadlock:**
+Always acquire locks in a consistent, global order. If you need to lock two accounts, lock the one with the smaller ID first.
+
+```java
+public void transferSafe(Account from, Account to, double amount) {
+    // Determine a global lock order (e.g., by unique ID)
+    Account firstLock = from.getId() < to.getId() ? from : to;
+    Account secondLock = from.getId() < to.getId() ? to : from;
+
+    synchronized (firstLock) {
+        synchronized (secondLock) {
+            from.debit(amount);
+            to.credit(amount);
+        }
+    }
+}
+```
+This guarantees that whether Thread A transfers `acc1` to `acc2` and Thread B transfers `acc2` to `acc1`, *both* threads will lock `acc1` first. The first thread to reach `synchronized(firstLock)` proceeds, while the second thread waits. Deadlock is mathematically impossible.
+
+**Why does this work? (Timeline comparison)**
+*Assume Account 1 has ID=100 and Account 2 has ID=200.*
+
+**Before (The Bug):**
+- Thread A (Acc1 -> Acc2) locks Acc1.
+- Thread B (Acc2 -> Acc1) locks Acc2.
+- Thread A tries to lock Acc2 -> blocked by Thread B.
+- Thread B tries to lock Acc1 -> blocked by Thread A. (Deadlock)
+
+**After (The Fix):**
+- Thread A (Acc1 -> Acc2) determines first lock is Acc1 (ID 100 < 200).
+- Thread B (Acc2 -> Acc1) determines first lock is Acc1 (ID 100 < 200).
+- Thread A locks Acc1.
+- Thread B tries to lock Acc1 -> blocked by Thread A. (Thread B safely waits, no deadlock)
+- Thread A locks Acc2, does the transfer, and releases both locks.
+- Thread B wakes up, locks Acc1, locks Acc2, does the transfer, and releases both locks.
+
 #### Livelock
 A livelock occurs when threads are not blocked, but they continuously change their state in response to each other without making any real progress.
 
@@ -290,6 +326,29 @@ public void workerAction(Worker otherWorker) {
 // If Worker A and Worker B are both active, they will both see the other is active,
 // both sleep for 10ms, wake up, see the other is still active, and sleep again indefinitely.
 ```
+
+**How to avoid Livelock:**
+Introduce **randomness** or **asymmetry** into the retry logic so threads break out of sync.
+
+```java
+public void workerAction(Worker otherWorker) {
+    Random random = new Random();
+    while (this.isActive) {
+        if (otherWorker.isActive) {
+            try {
+                // Sleep for a RANDOM duration to desynchronize their loops
+                Thread.sleep(random.nextInt(50)); 
+                continue;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        // Perform work...
+        this.isActive = false;
+    }
+}
+```
+By backing off for a random amount of time (e.g., 0 to 50ms), one thread will wake up before the other, realize the other is still sleeping, and complete its work. The endless "hallway dance" is broken.
 
 #### Rules and Tips to Avoid Lock Hazards
 
