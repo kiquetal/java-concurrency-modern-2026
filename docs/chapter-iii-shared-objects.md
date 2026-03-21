@@ -460,5 +460,14 @@ Break any one condition and deadlock is impossible. Global lock ordering breaks 
   See in action: `src/main/java/dev/concurrency/sharingobjects/TryLockRetryExample.java`
 
   ![tryLock retry sequence](trylock-retry-sequence.png)
+
+  > **Why doesn't `tryLock` throw `InterruptedException` here?** It *can*, but only if someone calls `thread.interrupt()` on the waiting thread. In this example nobody does. When the lock isn't acquired within the timeout, `tryLock` simply **returns `false`** — no exception. The retry loop handles that. `InterruptedException` is a *capability* (the thread is interruptible while waiting), not a guarantee.
+
+  | Mechanism | Blocks forever? | Interruptible? | Throws InterruptedException? |
+  |---|---|---|---|
+  | `synchronized` | Yes | No | No |
+  | `lock()` | Yes | No | No |
+  | `lockInterruptibly()` | Yes | Yes | Yes |
+  | `tryLock(timeout)` | No (bounded) | Yes | Yes |
 - **Keep Lock Blocks Small:** Hold locks for the shortest possible time. Only include the code that actually accesses the shared state. Do not perform expensive operations (like I/O or network calls) while holding a lock.
 - **Never Call Alien Methods While Holding a Lock:** An "alien method" is a method whose implementation you don't control (e.g., an overridden method or a listener callback). Calling it while holding a lock is dangerous because the alien method might try to acquire another lock, violating your lock ordering and causing a deadlock.
