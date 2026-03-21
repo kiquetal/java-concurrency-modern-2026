@@ -12,4 +12,6 @@ Defines a partial ordering called "happens-before" that guarantees visibility an
 Example: If Thread A writes to a variable and then Thread B reads that variable, the JMM ensures that if Thread A's write happens-before Thread B's read, then Thread B will see the updated value.
 If there is no happens-before relationship, then the behavior is undefined, and Thread B may see a stale value or even a completely different value.
 
+![happens-before visibility](happens-before-visibility.png)
+
 
