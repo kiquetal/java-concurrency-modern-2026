@@ -246,10 +246,50 @@ A deadlock occurs when two or more threads are blocked forever, waiting for each
 - Thread B tries to acquire Lock 1 (blocks, because A holds it).
 Neither thread can proceed. They are stuck indefinitely.
 
+```java
+// Deadlock example: Two threads trying to transfer money between two accounts.
+public void transfer(Account from, Account to, double amount) {
+    synchronized (from) {
+        synchronized (to) {
+            from.debit(amount);
+            to.credit(amount);
+        }
+    }
+}
+
+// If Thread A calls transfer(acc1, acc2, 100) and Thread B calls transfer(acc2, acc1, 50) at the same time:
+// 1. Thread A locks acc1.
+// 2. Thread B locks acc2.
+// 3. Thread A tries to lock acc2 (blocks).
+// 4. Thread B tries to lock acc1 (blocks).
+// DEADLOCK!
+```
+
 #### Livelock
 A livelock occurs when threads are not blocked, but they continuously change their state in response to each other without making any real progress.
 
 **Analogy:** Two people meet in a narrow hallway. Person A steps to their right to let B pass. Person B steps to their left to let A pass. They are now blocking each other again. They keep stepping side-to-side indefinitely. They are "active" but no progress is made. In code, this often happens when threads use `tryLock()` and back off, but their backoff logic forces them into an endless retry loop in lockstep.
+
+```java
+// Livelock example: Two threads trying to politely let the other go first.
+public void workerAction(Worker otherWorker) {
+    while (this.isActive) {
+        if (otherWorker.isActive) {
+            // Be polite, sleep and let the other finish
+            try {
+                Thread.sleep(10);
+                continue; // Restart the loop, backoff
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        // Perform work...
+        this.isActive = false;
+    }
+}
+// If Worker A and Worker B are both active, they will both see the other is active,
+// both sleep for 10ms, wake up, see the other is still active, and sleep again indefinitely.
+```
 
 #### Rules and Tips to Avoid Lock Hazards
 

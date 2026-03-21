@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add section on sharing objects safely in multithreaded environments">
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: update ConnectionPool example to use ReentrantLock for thread safety">
       <change beforePath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -140,7 +140,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="2970000" />
+      <workItem from="1774095730407" duration="3270000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -182,7 +182,39 @@
       <option name="project" value="LOCAL" />
       <updated>1774107341532</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="docs: correct typos and enhance immutability section with examples">
+      <option name="closed" value="true" />
+      <created>1774107658451</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1774107658451</updated>
+    </task>
+    <task id="LOCAL-00007" summary="docs: add examples of thread-safe and thread-confined programming patterns">
+      <option name="closed" value="true" />
+      <created>1774107664841</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1774107664841</updated>
+    </task>
+    <task id="LOCAL-00008" summary="docs: update GuardedObjectExample to use ReentrantLock for thread safety">
+      <option name="closed" value="true" />
+      <created>1774107815339</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1774107815339</updated>
+    </task>
+    <task id="LOCAL-00009" summary="docs: update ConnectionPool example to use ReentrantLock for thread safety">
+      <option name="closed" value="true" />
+      <created>1774107823815</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1774107823815</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -193,7 +225,11 @@
     <MESSAGE value="docs: enhance chapter on ThreadLocal with real-world use cases and warnings" />
     <MESSAGE value="docs: add section on immutability and its implications for thread safety" />
     <MESSAGE value="docs: add section on sharing objects safely in multithreaded environments" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add section on sharing objects safely in multithreaded environments" />
+    <MESSAGE value="docs: correct typos and enhance immutability section with examples" />
+    <MESSAGE value="docs: add examples of thread-safe and thread-confined programming patterns" />
+    <MESSAGE value="docs: update GuardedObjectExample to use ReentrantLock for thread safety" />
+    <MESSAGE value="docs: update ConnectionPool example to use ReentrantLock for thread safety" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: update ConnectionPool example to use ReentrantLock for thread safety" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
