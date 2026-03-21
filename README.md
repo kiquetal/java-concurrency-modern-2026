@@ -16,16 +16,12 @@ src/    → Code examples and exercises
 
 ## Status
 
-## 📚 Core References
-
-- **Modern Concurrency in Java** | *A N M Bazlur Rahman*
-  - Ch. 4: Virtual Threads
-  - Ch. 7: Carrier Thread Pinning
-- **Java Structured Concurrency** | *Anghel Leonard*
-  - Ch. 2: StructuredTaskScope
-  - Ch. 5: Scoped Values
-- **Java Concurrency in Practice** | *Brian Goetz*
-  - Ch. 3: Sharing Objects
-  - Ch. 16: Java Memory Model
-- **Understanding Java Virtual Threads** | *Fu Cheng*
-  - The Scheduler & Continuations
+| Book | Chapter | Topic | Status |
+|------|---------|-------|--------|
+| Modern Concurrency in Java | Ch. 4 | Virtual Threads | ⬜ |
+| Modern Concurrency in Java | Ch. 7 | Carrier Thread Pinning | ⬜ |
+| Java Structured Concurrency | Ch. 2 | StructuredTaskScope | ⬜ |
+| Java Structured Concurrency | Ch. 5 | Scoped Values | ⬜ |
+| Java Concurrency in Practice | Ch. 3 | Sharing Objects | ⬜ |
+| Java Concurrency in Practice | Ch. 16 | Java Memory Model | ⬜ |
+| Understanding Java Virtual Threads | — | The Scheduler & Continuations | ⬜ |
