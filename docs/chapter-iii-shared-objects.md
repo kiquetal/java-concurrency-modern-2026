@@ -415,5 +415,48 @@ Break any one condition and deadlock is impossible. Global lock ordering breaks 
 > If all threads always acquire locks in the exact same order (e.g., always Lock 1 then Lock 2), deadlocks involving those locks are mathematically impossible. If you need to lock two objects, order them by a unique property (like a database ID or `System.identityHashCode`).
 
 - **Use Timed Locks (`tryLock`):** Instead of blocking forever with `.lock()`, use `.tryLock(timeout, TimeUnit)`. If the lock isn't acquired in time, the thread can back off, release its current locks, wait a random amount of time (to avoid livelock), and retry.
+
+  ```java
+  public class OrderServiceWithTryLock {
+      private final ReentrantLock inventoryLock = new ReentrantLock();
+      private final ReentrantLock ledgerLock = new ReentrantLock();
+      private static final int MAX_RETRIES = 3;
+
+      public boolean placeOrder(String item) throws InterruptedException {
+          Random random = new Random();
+          for (int attempt = 0; attempt < MAX_RETRIES; attempt++) {
+              if (inventoryLock.tryLock(100, TimeUnit.MILLISECONDS)) {
+                  try {
+                      if (ledgerLock.tryLock(100, TimeUnit.MILLISECONDS)) {
+                          try {
+                              // both locks acquired — do the work
+                              System.out.println("Order placed for " + item);
+                              return true;
+                          } finally {
+                              ledgerLock.unlock();
+                          }
+                      }
+                  } finally {
+                      inventoryLock.unlock(); // release first lock if second failed
+                  }
+              }
+              // back off with random delay to avoid livelock
+              Thread.sleep(random.nextInt(50));
+          }
+          System.out.println("Could not place order after " + MAX_RETRIES + " attempts");
+          return false;
+      }
+  }
+  ```
+
+  The retry loop works like this:
+  1. Try to acquire the first lock (with a timeout, not forever).
+  2. If got it, try the second lock (also with a timeout).
+  3. If the second lock fails, **release the first lock** in the `finally` block — this is critical. If you hold onto it, you're back to hold-and-wait.
+  4. Sleep a **random** duration so threads desynchronize (avoids livelock).
+  5. Retry from step 1.
+  6. After `MAX_RETRIES`, give up and return `false` — the caller decides what to do (retry later, return an error to the user, etc.).
+
+  See in action: `src/main/java/dev/concurrency/sharingobjects/TryLockRetryExample.java`
 - **Keep Lock Blocks Small:** Hold locks for the shortest possible time. Only include the code that actually accesses the shared state. Do not perform expensive operations (like I/O or network calls) while holding a lock.
 - **Never Call Alien Methods While Holding a Lock:** An "alien method" is a method whose implementation you don't control (e.g., an overridden method or a listener callback). Calling it while holding a lock is dangerous because the alien method might try to acquire another lock, violating your lock ordering and causing a deadlock.

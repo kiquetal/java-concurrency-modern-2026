@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add strategies to avoid deadlock and livelock in multithreaded programming">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming">
+      <change beforePath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-iii-shared-objects.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,6 +63,7 @@
     "Application.GuardedObjectExample.executor": "Run",
     "Application.SharedThreadSafeExample.executor": "Run",
     "Application.ThreadLocalDemo.executor": "Run",
+    "Application.TryLockRetryExample.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.MCP Project settings loaded": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -140,7 +141,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="4256000" />
+      <workItem from="1774095730407" duration="4560000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -230,7 +231,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774108197800</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming">
+      <option name="closed" value="true" />
+      <created>1774115833716</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1774115833716</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,7 +256,8 @@
     <MESSAGE value="docs: update ConnectionPool example to use ReentrantLock for thread safety" />
     <MESSAGE value="docs: add examples of deadlock and livelock scenarios in multithreaded programming" />
     <MESSAGE value="docs: add strategies to avoid deadlock and livelock in multithreaded programming" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add strategies to avoid deadlock and livelock in multithreaded programming" />
+    <MESSAGE value="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add real-world deadlock example and strategies to avoid it in multithreaded programming" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
