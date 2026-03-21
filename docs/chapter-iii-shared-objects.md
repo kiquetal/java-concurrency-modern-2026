@@ -154,20 +154,73 @@ See in action: `src/main/java/dev/concurrency/sharingobjects/ThreadLocalDemo.jav
 `ThreadLocal` works well with platform threads (hundreds of threads = hundreds of copies). With virtual threads (potentially millions), each one gets its own copy — that's a memory problem. This is why Java introduced **Scoped Values** as the virtual-thread-friendly replacement. See Phase III notes on Scoped Values (Ch. 5).
 
 
-#### Inmutability
+#### Immutability
 
-An inmutable object is one whose state cannot chaange
-after construction. Inmutable objects are thread-safe by design, because their state cannot be modified after they are created. This means that multiple threads can safely share references to the same inmutable object without any synchronization.
+An immutable object is one whose state cannot change
+after construction. Immutable objects are thread-safe by design, because their state cannot be modified after they are created. This means that multiple threads can safely share references to the same immutable object without any synchronization.
 
-Inmutable objects are always thread-safe, but thread-safe objects are not always inmutable. For example, a `Vector` is thread-safe because its methods are synchronized, but it is not inmutable because its state can change after construction.
+Immutable objects are always thread-safe, but thread-safe objects are not always immutable. For example, a `Vector` is thread-safe because its methods are synchronized, but it is not immutable because its state can change after construction.
 
+```java
+public final class ImmutableUser {
+    private final String name;
+    private final List<String> roles;
+
+    public ImmutableUser(String name, List<String> roles) {
+        this.name = name;
+        this.roles = List.copyOf(roles); // Make a defensive copy
+    }
+
+    public String getName() { return name; }
+    public List<String> getRoles() { return roles; } // Returns an unmodifiable list
+}
+```
+
+See in action: `src/main/java/dev/concurrency/sharingobjects/ImmutableUser.java`
 
 #### Sharing objects safely
 
-- Thread-confined: A thread-confined object is only accessed by a single thread. No synchronization is needed because no other thread can see it.
+- **Thread-confined**: A thread-confined object is only accessed by a single thread. No synchronization is needed because no other thread can see it.
+  ```java
+  public void processItems() {
+      // confinedList is strictly thread-confined
+      List<String> confinedList = new ArrayList<>();
+      confinedList.add("Item 1");
+  }
+  ```
+  See in action: `src/main/java/dev/concurrency/sharingobjects/ThreadConfinedExample.java`
 
-- Shared read-only: If an object is shared between threads but never modified after construction, it is thread-safe. This is often achieved by making the object inmutable.
+- **Shared read-only**: If an object is shared between threads but never modified after construction, it is thread-safe. This is often achieved by making the object immutable.
+  ```java
+  public class Config {
+      // Shared read-only object
+      public static final Map<String, String> SETTINGS = Map.of("timeout", "5000");
+  }
+  ```
+  See in action: `src/main/java/dev/concurrency/sharingobjects/SharedReadOnlyExample.java`
 
-- Shared thread-safe: If an object is shared between threads and can be modified, it must be designed to be thread-safe. This typically involves using synchronization, volatile variables, or concurrent data structures to ensure that all threads see a consistent view of the object's state.
+- **Shared thread-safe**: If an object is shared between threads and can be modified, it must be designed to be thread-safe. This typically involves using synchronization, volatile variables, or concurrent data structures to ensure that all threads see a consistent view of the object's state.
+  ```java
+  public class ActiveUsers {
+      // Shared thread-safe concurrent collection
+      private final ConcurrentHashMap<String, String> users = new ConcurrentHashMap<>();
 
-- Guarded: A guarded object can be accessed only with a specific lock held. The lock protects the object's state from concurrent access, ensuring thread safety.
+      public void login(String user) {
+          users.put(user, "Active");
+      }
+  }
+  ```
+  See in action: `src/main/java/dev/concurrency/sharingobjects/SharedThreadSafeExample.java`
+
+- **Guarded**: A guarded object can be accessed only with a specific lock held. The lock protects the object's state from concurrent access, ensuring thread safety.
+  ```java
+  public class ConnectionPool {
+      // @GuardedBy("this")
+      private int availableConnections = 10;
+
+      public synchronized void acquire() {
+          availableConnections--;
+      }
+  }
+  ```
+  See in action: `src/main/java/dev/concurrency/sharingobjects/GuardedObjectExample.java`
