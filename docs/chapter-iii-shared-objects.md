@@ -2,17 +2,17 @@
 
 #### Notes
 
-- Locking is not just about mutual exclusionl it is also about memory visibility.
-To ensure that all threads see the most up-to-date values of shared mutable varibles, the reading and
+- Locking is not just about mutual exclusion; it is also about memory visibility.
+To ensure that all threads see the most up-to-date values of shared mutable variables, the reading and
 writing threads must synchronize on a common lock.
 
 #### Volatile
 
-A weaker form of synchronization, think they behave like SyncrhonizedInteger
+A weaker form of synchronization, think they behave like SynchronizedInteger
 
 
 Locking can guarantee both visibility and atomicity; volatile variables can only guarantee
-visibility..
+visibility.
 
 ---
 
