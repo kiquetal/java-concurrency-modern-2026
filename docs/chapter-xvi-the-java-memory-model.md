@@ -85,3 +85,11 @@ This is why a `while (!ready) { }` spin loop works when both threads are running
 For notification (actually waking up a sleeping thread), use `wait()/notify()`, `LockSupport.park()/unpark()`, `CountDownLatch`, `Semaphore`, etc.
 
 
+#### Safe publication
+
+To safely share an object between threads, you must ensure that the thread that creates the object establishes a happens-before relationship with the thread that uses it. This can be done through:
+- Initializing the object in a static initializer (class loading guarantees happens-before).
+- Storing the reference to the object in a `volatile` field or an `AtomicReference`.
+- Publishing the object through a thread-safe collection (e.g., `ConcurrentHashMap`).
+- Using a `synchronized` block or method to ensure visibility and ordering.
+
