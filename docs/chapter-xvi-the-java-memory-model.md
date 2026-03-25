@@ -139,6 +139,46 @@ reader.start();      // Reader inherits that visibility from Main
 
 That's exactly why `SafePublicationDemo` does NOT use `join()` between writer and reader. If it did, `join()` would safely publish the object by itself, making the volatile / synchronized / ConcurrentHashMap idiom invisible — you couldn't tell which mechanism was doing the work.
 
+#### What `join()` does NOT do — ordering between threads
+
+`join()` creates a happens-before from a thread to **main**. It does NOT create any ordering between threads themselves.
+
+![join does not order threads](images/join-does-not-order-threads.png)
+
+```
+Main Thread:
+  t1.start()  ──→  T1 runs ─────────────────── T1 finishes
+  t2.start()  ──→  T2 runs ───────── T2 finishes
+  t3.start()  ──→  T3 runs ──────────────── T3 finishes
+  t4.start()  ──→  T4 runs ── T4 finishes
+                    ↑
+                    All 4 run concurrently, in ANY order.
+                    No ordering between them!
+
+  t1.join()  ← Main waits for T1, then sees T1's writes
+  t2.join()  ← Main waits for T2, then sees T2's writes
+  t3.join()  ← Main waits for T3, then sees T3's writes
+  t4.join()  ← Main waits for T4, then sees T4's writes
+```
+
+What `join()` creates:
+```
+  T1's actions  ─hb→  Main after t1.join()    ✅
+  T2's actions  ─hb→  Main after t2.join()    ✅
+  T3's actions  ─hb→  Main after t3.join()    ✅
+```
+
+What `join()` does NOT create:
+```
+  T1  ←── no relationship ──→  T2    ❌
+  T1  ←── no relationship ──→  T3    ❌
+  T2  ←── no relationship ──→  T3    ❌
+```
+
+The threads are free to run in any order, interleave however the scheduler decides, and finish in any order. `join()` only tells main: "wait here until this one is done, and then you can see what it did."
+
+That's why the demo output is non-deterministic — `[guarded]` might print before `[static]`, or vice versa. The four reader threads have no ordering between each other.
+
 Instead the demo uses:
 - **Spin-wait** (for volatile) — the reader spins on the volatile field itself, so visibility comes purely from the volatile read.
 - **CountDownLatch** (for map and guarded) — the latch only signals "the writer stored something." The safe publication comes from `ConcurrentHashMap` or `synchronized`, not from the latch.
