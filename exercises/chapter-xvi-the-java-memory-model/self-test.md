@@ -104,6 +104,41 @@ Two failures: (1) the spin loop `while (viaVolatile == null)` may never terminat
 
 ---
 
+### 🧪 Happens-Before Reasoning
+
+**Q9 (Trace the Chain):** Does Thread B always print `true` and `100`? Identify every happens-before edge that makes it safe, or explain what's missing if it isn't.
+
+```java
+class Shared {
+    static int value = 0;
+    static volatile boolean flag = false;
+}
+
+// Thread A
+Shared.value = 100;
+Shared.flag = true;
+
+// Thread B
+if (Shared.flag) {
+    System.out.println(Shared.value == 100); // always true?
+}
+```
+
+<details>
+<summary>Answer</summary>
+
+Yes — **if** Thread B reads `flag == true`, it is guaranteed to also see `value == 100`. The chain:
+
+1. **Program order rule** — `value = 100` happens-before `flag = true` within Thread A.
+2. **Volatile variable rule** — the volatile write `flag = true` happens-before Thread B's volatile read of `flag`.
+3. **Transitivity** — therefore `value = 100` happens-before Thread B reads `value`.
+
+The one caveat: if Thread B reads `flag == false`, it entered the `if` block before Thread A's write was visible — the print never executes and there's nothing to reason about. The guarantee only applies when the volatile read observes `true`.
+
+</details>
+
+---
+
 ### 🧪 `join()` and Happens-Before
 
 **Q7 (Conceptual):** If you start 4 threads and then call `join()` on all 4 from main, does `join()` create any ordering between the 4 threads themselves?
