@@ -10,9 +10,10 @@ Learning journey through modern Java concurrency, based on:
 ## Structure
 
 ```
-docs/       → Markdown notes (migrating to Astro later)
-src/        → Code examples and demos
-exercises/  → Self-test questions per chapter
+docs/         → Markdown notes (migrating to Astro later)
+docs/images/  → Mermaid diagrams (PNG)
+src/          → Code examples and demos
+exercises/    → Self-test questions per chapter
 ```
 
 ## 📚 Notes
@@ -52,6 +53,18 @@ Self-test questions organized by chapter — see [exercises/README.md](exercises
 | :--- | :--- | :--- |
 | [Ch. III — Shared Objects](exercises/chapter-iii-shared-objects/self-test.md) | 8 | Publication/escape, ThreadLocal, deadlock/livelock |
 | [Ch. XVI — Java Memory Model](exercises/chapter-xvi-the-java-memory-model/self-test.md) | 9 | Piggybacking, safe publication, happens-before, `join()` |
+
+## 🖼️ Diagrams
+
+| Diagram | Topic |
+| :--- | :--- |
+| [happens-before-visibility](docs/images/happens-before-visibility.png) | Happens-before visibility between threads |
+| [join-happens-before-chain](docs/images/join-happens-before-chain.png) | `join()` happens-before chain (Writer → Main → Reader) |
+| [join-does-not-order-threads](docs/images/join-does-not-order-threads.png) | `join()` does NOT order threads relative to each other |
+| [join-as-happens-before](docs/images/join-as-happens-before.png) | `join()` as a happens-before edge |
+| [join-vs-safe-publication](docs/images/join-vs-safe-publication.png) | `join()` vs safe publication mechanisms |
+| [static-initializer-vs-static-method](docs/images/static-initializer-vs-static-method.png) | `static final` (class loading) vs `static` method (no sync) |
+| [trylock-retry-sequence](docs/images/trylock-retry-sequence.png) | tryLock retry with random backoff sequence |
 
 ## 🗺️ Chronological Study Plan
 
