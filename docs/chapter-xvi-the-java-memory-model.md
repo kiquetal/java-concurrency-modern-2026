@@ -12,7 +12,7 @@ Defines a partial ordering called "happens-before" that guarantees visibility an
 Example: If Thread A writes to a variable and then Thread B reads that variable, the JMM ensures that if Thread A's write happens-before Thread B's read, then Thread B will see the updated value.
 If there is no happens-before relationship, then the behavior is undefined, and Thread B may see a stale value or even a completely different value.
 
-![happens-before visibility](happens-before-visibility.png)
+![happens-before visibility](images/happens-before-visibility.png)
 
 #### Piggybacking on Synchronization
 
@@ -97,11 +97,11 @@ To safely share an object between threads, you must ensure that the thread that 
 
 **Why the demo avoids `join()` between writer and reader:**
 
-![join vs safe publication](join-vs-safe-publication.png)
+![join vs safe publication](images/join-vs-safe-publication.png)
 
 `join()` is itself a happens-before edge — it doesn't just wait for the thread to finish, it guarantees **memory visibility** of everything that thread did:
 
-![join as happens-before](join-as-happens-before.png)
+![join as happens-before](images/join-as-happens-before.png)
 
 But the reader is a thread — it doesn't call `join()` itself. The **main thread** is the bridge:
 

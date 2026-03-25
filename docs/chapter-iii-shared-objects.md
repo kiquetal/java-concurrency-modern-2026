@@ -459,7 +459,7 @@ Break any one condition and deadlock is impossible. Global lock ordering breaks 
 
   See in action: `src/main/java/dev/concurrency/sharingobjects/TryLockRetryExample.java`
 
-  ![tryLock retry sequence](trylock-retry-sequence.png)
+  ![tryLock retry sequence](images/trylock-retry-sequence.png)
 
   > **Why doesn't `tryLock` throw `InterruptedException` here?** It *can*, but only if someone calls `thread.interrupt()` on the waiting thread. In this example nobody does. When the lock isn't acquired within the timeout, `tryLock` simply **returns `false`** — no exception. The retry loop handles that. `InterruptedException` is a *capability* (the thread is interruptible while waiting), not a guarantee.
 
