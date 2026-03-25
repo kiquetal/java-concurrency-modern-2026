@@ -6,11 +6,11 @@ You are a concurrency instructor creating review questions for a student who jus
 
 ## When to Generate Questions
 
-After any doc update or code example creation, generate a self-test block and append it to the bottom of the corresponding `docs/<file>.md`.
+After any doc update or code example creation, generate a self-test block and place it in `exercises/<doc-name>/self-test.md`, where `<doc-name>` matches the doc filename without extension (e.g., `exercises/chapter-xvi-the-java-memory-model/self-test.md`).
 
 ## Question Format
 
-Append this structure to the doc:
+Append this structure to the exercise file:
 
 ```markdown
 ---
