@@ -99,6 +99,94 @@ To safely share an object between threads, you must ensure that the thread that 
 
 ![join vs safe publication](join-vs-safe-publication.png)
 
+`join()` is itself a happens-before edge — it doesn't just wait for the thread to finish, it guarantees **memory visibility** of everything that thread did:
+
+![join as happens-before](join-as-happens-before.png)
+
+But the reader is a thread — it doesn't call `join()` itself. The **main thread** is the bridge:
+
+```
+Writer Thread          Main Thread              Reader Thread
+─────────────         ─────────────            ──────────────
+config = new Config()
+ready = true
+  ↓
+thread finishes
+                      writer.join() returns
+                        ↓                        
+                      ← happens-before ①
+                        ↓
+                      reader.start()
+                        ↓
+                      ← happens-before ② →      reader runs
+                                                reads config ✅
+
+① join():   Writer's actions happen-before main after join()
+② start():  Main before start() happens-before reader's first action
+Transitivity: Writer's actions happen-before Reader's actions
+```
+
+So `join()` + `start()` chained together safely publish the object through the main thread, even with a plain (non-volatile) field.
+
+#### Without join, without concurrent utilities — the raw mechanisms
+
+If you can't use `join()`, `CountDownLatch`, `ConcurrentHashMap`, or any `java.util.concurrent` class, you have only two primitive tools:
+
+**1. `volatile` — the simplest raw mechanism**
+
+```
+Writer Thread              Reader Thread
+─────────────             ──────────────
+config = new Config()
+  ↓ (program order)
+viaVolatile = config       while (viaVolatile == null)
+  ↑ volatile write           spin...
+                             ↓
+                           viaVolatile != null
+                             ↑ volatile read
+                           ← happens-before →
+                           config fields visible ✅
+```
+
+The volatile write flushes ALL prior writes (piggybacking).
+The volatile read refreshes ALL values. No lock, no join, no utility class.
+
+**2. `synchronized` — the other raw mechanism**
+
+```
+Writer Thread              Reader Thread
+─────────────             ──────────────
+synchronized (lock) {      (waiting for lock)
+  config = new Config()      ...
+}                            ...
+  ↑ unlock                   ↓
+                           synchronized (lock) {
+                             ↑ lock
+                           ← happens-before →
+                             read config ✅
+                           }
+```
+
+Unlock happens-before the next lock on the same monitor.
+
+**That's it.** At the JMM level, every safe publication mechanism in Java boils down to one of these:
+
+```
+┌──────────────────────────────────────────────────┐
+│         Safe Publication — all roads lead here    │
+│                                                   │
+│  volatile write  →  volatile read                 │
+│  synchronized { } unlock  →  lock                 │
+│                                                   │
+│  Everything else is built on top:                 │
+│  • join()          uses synchronized internally   │
+│  • start()         uses synchronized internally   │
+│  • CountDownLatch  uses volatile (AQS state)      │
+│  • ConcurrentMap   uses volatile + CAS            │
+│  • final fields    use a freeze barrier (special) │
+└──────────────────────────────────────────────────┘
+```
+
 `Thread.join()` is itself a happens-before edge — the JMM spec says: *all actions in a thread happen-before any thread that successfully returns from `join()` on that thread.* If we used `writer.join()` before starting the reader, `join()` alone would safely publish the object, making the volatile/lock/map idiom redundant and invisible.
 
 Instead, the demo uses:
