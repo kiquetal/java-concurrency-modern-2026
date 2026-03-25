@@ -2,7 +2,7 @@
   "name": "concurrency-java-scholar",
   "description": "Java concurrency self-test question generator and review instructor",
   "prompt": "file://.kiro/steering-questions.md",
-  "tools": ["fs_read", "fs_write", "glob", "grep"],
-  "allowedTools": ["fs_read", "glob", "grep"],
+  "tools": ["fs_read", "fs_write", "glob", "grep", "shell"],
+  "allowedTools": ["fs_read", "fs_write", "glob", "grep", "shell"],
   "resources": ["file://docs/**/*.md", "file://src/**/*.java", "file://exercises/**/*.md"]
 }
