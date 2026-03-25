@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add SafePublicationDemo to illustrate safe publication idioms">
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: expand safe publication section with join and synchronization examples">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/dev/concurrency/memorymodel/SafePublicationDemo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dev/concurrency/memorymodel/SafePublicationDemo.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +163,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="12434000" />
+      <workItem from="1774095730407" duration="13070000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -395,14 +397,21 @@
       <option name="project" value="LOCAL" />
       <updated>1774447470516</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="docs: expand safe publication section with join and synchronization examples">
+      <option name="closed" value="true" />
+      <created>1774447780504</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1774447780504</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="docs: enhance chapter on ThreadLocal with real-world use cases and warnings" />
     <MESSAGE value="docs: add section on immutability and its implications for thread safety" />
     <MESSAGE value="docs: add section on sharing objects safely in multithreaded environments" />
     <MESSAGE value="docs: correct typos and enhance immutability section with examples" />
@@ -427,7 +436,8 @@
     <MESSAGE value="docs: add safe publication guidelines for sharing objects between threads" />
     <MESSAGE value="docs: add safe publication guidelines and demo in Chapter XVI" />
     <MESSAGE value="docs: add SafePublicationDemo to illustrate safe publication idioms" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: add SafePublicationDemo to illustrate safe publication idioms" />
+    <MESSAGE value="docs: expand safe publication section with join and synchronization examples" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: expand safe publication section with join and synchronization examples" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
