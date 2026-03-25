@@ -85,6 +85,16 @@ This is why a `while (!ready) { }` spin loop works when both threads are running
 For notification (actually waking up a sleeping thread), use `wait()/notify()`, `LockSupport.park()/unpark()`, `CountDownLatch`, `Semaphore`, etc.
 
 
+
+#### Unsafe Publication
+
+If you share an object between threads without proper synchronization, you risk unsafe publication. This can lead to:
+- **Stale data** — the reader thread may see an outdated version of the object,
+- **Partially constructed objects** — the reader may see a reference to an object that hasn't been fully initialized, leading to `NullPointerException` or other unpredictable behavior.
+
+
+
+
 #### Safe publication
 
 To safely share an object between threads, you must ensure that the thread that creates the object establishes a happens-before relationship with the thread that uses it. This can be done through:
@@ -94,6 +104,92 @@ To safely share an object between threads, you must ensure that the thread that 
 - Using a `synchronized` block or method to ensure visibility and ordering.
 
 📎 **Code:** [`SafePublicationDemo`](../src/main/java/dev/concurrency/memorymodel/SafePublicationDemo.java)
+
+#### Unsafe publication — the broken lazy singleton
+
+A `static` **method** is not a `static` **initializer**. This is a critical distinction:
+
+![static initializer vs static method](images/static-initializer-vs-static-method.png)
+
+```
+✅ static INITIALIZER — JVM synchronizes class loading
+
+    class SafeConfig {
+        static final Config INSTANCE = new Config();  // runs ONCE at class-load
+    }
+    ↓
+    The JVM guarantees: class initialization completes before ANY thread
+    can use the class. Other threads are BLOCKED until it finishes.
+    This is why static final fields are safely published.
+
+
+❌ static METHOD with lazy init — just a regular method call
+
+    class BrokenSingleton {
+        private static BrokenSingleton instance;  // plain field, not final
+
+        public static BrokenSingleton getInstance() {  // no synchronization!
+            if (instance == null) {
+                instance = new BrokenSingleton();
+            }
+            return instance;
+        }
+    }
+    ↓
+    getInstance() is just a method. Nothing blocks. Nothing synchronizes.
+    Two threads can call it at the same time and both see null.
+```
+
+The keyword `static` on a method just means "belongs to the class, not an instance." It has zero concurrency guarantees. The blocking behavior comes from class loading (static initializers and static final fields), not from the `static` keyword itself.
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                  static ≠ synchronized                          │
+│                                                                 │
+│  static final X = new X()     ← class loading (JVM locks it)   │
+│  ┌──────────┐                                                   │
+│  │ Thread 1 │──→ uses X ──→ BLOCKED until class loads ──→ ✅   │
+│  │ Thread 2 │──→ uses X ──→ BLOCKED until class loads ──→ ✅   │
+│  └──────────┘                                                   │
+│  The JVM holds an internal lock during class initialization.    │
+│  Only ONE thread initializes the class. Others wait.            │
+│                                                                 │
+│  ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─  │
+│                                                                 │
+│  static getInstance()         ← just a method (no lock)        │
+│  ┌──────────┐                                                   │
+│  │ Thread 1 │──→ calls getInstance() ──→ sees null ──→ new()   │
+│  │ Thread 2 │──→ calls getInstance() ──→ sees null ──→ new()   │
+│  └──────────┘                          ↑ same time! two objects │
+│  The JVM does NOTHING special. It's a plain method call.        │
+│  "static" just means "no this pointer." That's all.             │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+The most common unsafe publication bug is the lazy singleton without `volatile`:
+
+```java
+private static Singleton instance;
+
+public static Singleton getInstance() {
+    if (instance == null) {
+        instance = new Singleton();
+    }
+    return instance;
+}
+```
+
+Two bugs in one:
+1. **Race condition** — two threads see `instance == null`, both create an instance.
+2. **Half-constructed object** — the JVM may reorder the assignment: publish the reference BEFORE the constructor finishes. Thread B sees `instance != null` but reads default field values (`0`, `null`).
+
+Bug #2 is the scary one — it doesn't create two instances, it creates one instance that another thread sees in a broken state. It compiles, passes tests, and fails under load on certain CPUs.
+
+Three correct fixes: `volatile` + double-checked locking, the holder class idiom (lazy + lock-free), or an `enum` singleton.
+
+📎 **Code:** [`UnsafePublicationDemo`](../src/main/java/dev/concurrency/memorymodel/UnsafePublicationDemo.java)
+
+> **Hint:** The holder idiom (`private static class Holder { static final X INSTANCE = new X(); }`) is the best lazy singleton in Java — it's lazy (inner class loads on first call), thread-safe (class loading is synchronized by the JVM), and lock-free on the fast path. No `volatile`, no `synchronized`, no double-checking.
 
 **Why the demo avoids `join()` between writer and reader:**
 
