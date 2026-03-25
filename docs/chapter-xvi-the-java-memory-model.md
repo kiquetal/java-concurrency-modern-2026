@@ -93,3 +93,19 @@ To safely share an object between threads, you must ensure that the thread that 
 - Publishing the object through a thread-safe collection (e.g., `ConcurrentHashMap`).
 - Using a `synchronized` block or method to ensure visibility and ordering.
 
+📎 **Code:** [`SafePublicationDemo`](../src/main/java/dev/concurrency/memorymodel/SafePublicationDemo.java)
+
+**Why the demo avoids `join()` between writer and reader:**
+
+![join vs safe publication](join-vs-safe-publication.png)
+
+`Thread.join()` is itself a happens-before edge — the JMM spec says: *all actions in a thread happen-before any thread that successfully returns from `join()` on that thread.* If we used `writer.join()` before starting the reader, `join()` alone would safely publish the object, making the volatile/lock/map idiom redundant and invisible.
+
+Instead, the demo uses:
+- **Spin-wait** (for volatile) — the reader spins on the volatile field itself, so the happens-before comes purely from the volatile read.
+- **CountDownLatch** (for map and guarded) — the latch only signals "the writer stored something." The safe publication guarantee comes from the `ConcurrentHashMap` or the `synchronized` block, not from the latch.
+
+This way each idiom stands on its own — you can see exactly which mechanism provides the visibility guarantee.
+
+> **Hint:** A `record` with only primitive/immutable components is the easiest safe publication win — its fields are `final`, so the JVM's freeze barrier guarantees any thread that sees the reference also sees fully initialized fields. No `volatile`, no lock, no effort.
+

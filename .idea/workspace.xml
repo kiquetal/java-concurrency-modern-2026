@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: clarify volatile variable behavior and misconceptions in Chapter XVI">
+    <list default="true" id="39316933-f235-4474-b757-29c4b4774a50" name="Changes" comment="docs: add safe publication guidelines for sharing objects between threads">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/chapter-xvi-the-java-memory-model.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +62,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.GuardedObjectExample.executor": "Run",
+    "Application.SafePublicationDemo.executor": "Run",
     "Application.SharedThreadSafeExample.executor": "Run",
     "Application.ThreadLocalDemo.executor": "Run",
     "Application.TryLockRetryExample.executor": "Run",
@@ -125,6 +127,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SafePublicationDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="dev.concurrency.memorymodel.SafePublicationDemo" />
+      <module name="java-concurrency-modern-2026" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="dev.concurrency.memorymodel.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.SafePublicationDemo" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -142,7 +162,7 @@
       <option name="presentableId" value="Default" />
       <updated>1774092853192</updated>
       <workItem from="1774092858502" duration="1238000" />
-      <workItem from="1774095730407" duration="11178000" />
+      <workItem from="1774095730407" duration="12046000" />
     </task>
     <task id="LOCAL-00001" summary="docs: expand chapter on shared objects with volatile and publication concepts">
       <option name="closed" value="true" />
@@ -344,7 +364,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774118204924</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="docs: add safe publication guidelines for sharing objects between threads">
+      <option name="closed" value="true" />
+      <created>1774446595417</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1774446595417</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -374,7 +402,8 @@
     <MESSAGE value="docs: add example for piggybacking on synchronization in Chapter XVI" />
     <MESSAGE value="docs: add VolatilePiggybackDemo to illustrate volatile piggybacking concept" />
     <MESSAGE value="docs: clarify volatile variable behavior and misconceptions in Chapter XVI" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs: clarify volatile variable behavior and misconceptions in Chapter XVI" />
+    <MESSAGE value="docs: add safe publication guidelines for sharing objects between threads" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: add safe publication guidelines for sharing objects between threads" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
