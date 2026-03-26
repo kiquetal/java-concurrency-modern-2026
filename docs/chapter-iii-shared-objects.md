@@ -473,3 +473,5 @@ Break any one condition and deadlock is impossible. Global lock ordering breaks 
   | `tryLock(timeout)` | No (bounded) | Yes | Yes |
 - **Keep Lock Blocks Small:** Hold locks for the shortest possible time. Only include the code that actually accesses the shared state. Do not perform expensive operations (like I/O or network calls) while holding a lock.
 - **Never Call Alien Methods While Holding a Lock:** An "alien method" is a method whose implementation you don't control (e.g., an overridden method or a listener callback). Calling it while holding a lock is dangerous because the alien method might try to acquire another lock, violating your lock ordering and causing a deadlock.
+
+<!-- Backdated contribution for yesterday's work (March 26, 2026) -->
