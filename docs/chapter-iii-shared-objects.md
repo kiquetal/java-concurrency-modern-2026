@@ -110,6 +110,8 @@ These bugs are silent — the code compiles, passes tests, and works 99.9% of th
 
 ### ThreadLocal
 
+![ThreadLocal internals and real-world usage](images/threadlocal-internals-and-real-world.png)
+
 A `ThreadLocal` variable provides thread-local storage: each thread has its own independent copy of the variable. This is useful for maintaining per-thread state without synchronization.
 
 ```java
