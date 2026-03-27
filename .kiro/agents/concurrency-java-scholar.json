@@ -3,6 +3,13 @@
   "description": "Java concurrency self-test question generator and review instructor",
   "prompt": "file://.kiro/steering-questions.md",
   "tools": ["fs_read", "fs_write", "glob", "grep", "shell"],
-  "allowedTools": ["fs_read", "fs_write", "glob", "grep", "shell"],
-  "resources": ["file://docs/**/*.md", "file://src/**/*.java", "file://exercises/**/*.md"]
+  "allowedTools": ["fs_read", "fs_write", "glob", "grep", "shell", "@mcp-mermaid"],
+  "resources": ["file://docs/**/*.md", "file://src/**/*.java", "file://exercises/**/*.md"],
+  "mcpServers": {
+    "mcp-mermaid": {
+      "command": "/mydata/.nvm/versions/node/v22.14.0/bin/node",
+      "args": ["/mydata/.nvm/versions/node/v22.14.0/bin/mcp-mermaid"],
+      "disabled": false
+    }
+  }
 }
